@@ -1,0 +1,4 @@
+name: EasyLogin
+version: '${version}'
+main: ua.starman.easylogin.EasyLogin
+api-version: '1.20'
