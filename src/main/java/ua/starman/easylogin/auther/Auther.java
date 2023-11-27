@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
-import ua.starman.easylogin.EasyLogin;
+import ua.starman.easylogin.EasyAuth;
 import ua.starman.easylogin.utils.Vars;
 
 import java.io.File;
@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class Auther implements Listener {
-    public static File dataDir = new File("plugins/EasyLogin/player-data");
-    static Plugin plugin = EasyLogin.getPlugin(EasyLogin.class);
+    public static File dataDir = new File("plugins/EasyAuth/player-data");
+    static Plugin plugin = EasyAuth.getPlugin(EasyAuth.class);
 
     Vars vars = new Vars();
 
@@ -43,13 +43,13 @@ public class Auther implements Listener {
             }
 
             List<MetadataValue> metadataNeedRegisterList = player.getMetadata("need_register");
-
             if (metadataNeedRegisterList.isEmpty() && metadataBlocked.asBoolean()) {
-                player.sendMessage(vars.getPluginTab() + ChatColor.DARK_RED + "Введите /login <пароль>");
-            } else if (metadataBlocked.asBoolean()){
-                player.sendMessage(vars.getPluginTab() + ChatColor.DARK_RED + "Введи " +
-                        "/register <пароль> <пароль>");
+                player.sendMessage(vars.getPluginTab() + ChatColor.DARK_RED + "Enter /login <password>");
+            } else if (!metadataNeedRegisterList.isEmpty() && metadataBlocked.asBoolean()){
+                player.sendMessage(vars.getPluginTab() + ChatColor.DARK_RED + "Enter " +
+                        "/register <password> <password>");
             }
+
         }
     }
 

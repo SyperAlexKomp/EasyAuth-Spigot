@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'ua.starman'
-version = '1.0-PRE-RELISE'
+version = '1.0'
 
 repositories {
     mavenCentral()

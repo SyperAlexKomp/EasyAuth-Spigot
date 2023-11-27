@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
-import ua.starman.easylogin.EasyLogin;
+import ua.starman.easylogin.EasyAuth;
 import ua.starman.easylogin.auther.Auther;
 import ua.starman.easylogin.auther.PlayerData;
 import ua.starman.easylogin.utils.Vars;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class LoginCommand implements CommandExecutor {
-    static Plugin plugin = EasyLogin.getPlugin(EasyLogin.class);
+    static Plugin plugin = EasyAuth.getPlugin(EasyAuth.class);
     private final Vars vars = new Vars();
 
     private static String encodeToSHA256(String originalString) {
@@ -61,6 +61,11 @@ public class LoginCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             List<MetadataValue> metadataBlockedList = ((Player) sender).getMetadata("blocked");
+            if (metadataBlockedList.isEmpty()) {
+                sender.sendMessage(vars.getPluginTab() + ChatColor.GREEN +
+                        "You are already authed!");
+                return true;
+            }
             for (MetadataValue metadataBlocked : metadataBlockedList) {
                 if (metadataBlocked.asBoolean()) {
                     List<MetadataValue> metadataNeedRegisterList = ((Player) sender)
@@ -97,7 +102,7 @@ public class LoginCommand implements CommandExecutor {
                     }
                 } else {
                     sender.sendMessage(vars.getPluginTab() + ChatColor.GREEN +
-                            "You are already log in!");
+                            "You are already authed!");
                 }
             }
 
