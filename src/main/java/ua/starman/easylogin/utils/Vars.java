@@ -4,6 +4,6 @@ import org.bukkit.ChatColor;
 
 public class Vars {
     public String getPluginTab() {
-        return ChatColor.RED + "[EasyLogin]" + ChatColor.RESET;
+        return ChatColor.RED + "[EasyAuth] " + ChatColor.RESET;
     }
 }

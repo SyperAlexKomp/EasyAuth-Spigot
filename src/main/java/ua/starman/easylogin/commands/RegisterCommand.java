@@ -8,13 +8,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
-import ua.starman.easylogin.EasyLogin;
+import ua.starman.easylogin.EasyAuth;
 import ua.starman.easylogin.auther.Auther;
 import ua.starman.easylogin.auther.PlayerData;
 import ua.starman.easylogin.utils.Vars;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -23,7 +21,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class RegisterCommand implements CommandExecutor {
-    static Plugin plugin = EasyLogin.getPlugin(EasyLogin.class);
+    static Plugin plugin = EasyAuth.getPlugin(EasyAuth.class);
     private final Vars vars = new Vars();
 
     private static String encodeToSHA256(String originalString) {
@@ -51,6 +49,11 @@ public class RegisterCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             List<MetadataValue> metadataList = ((Player) sender).getMetadata("need_register");
+            if (metadataList.isEmpty()) {
+                sender.sendMessage(vars.getPluginTab() + ChatColor.GREEN +
+                        "You are already authed!");
+                return true;
+            }
             for (MetadataValue need_register : metadataList) {
                 if (need_register.asBoolean()) {
                     if (args.length > 1) {

@@ -3,7 +3,6 @@ package ua.starman.easylogin;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.checker.units.qual.A;
 import ua.starman.easylogin.auther.Auther;
 import ua.starman.easylogin.commands.LoginCommand;
 import ua.starman.easylogin.commands.RegisterCommand;
@@ -12,7 +11,7 @@ import ua.starman.easylogin.utils.UpdateChecker;
 import java.util.Collections;
 import java.util.Objects;
 
-public final class EasyLogin extends JavaPlugin {
+public final class EasyAuth extends JavaPlugin {
 
     FileConfiguration config = getConfig();
 
@@ -59,10 +58,12 @@ public final class EasyLogin extends JavaPlugin {
                 Collections.singletonList("Message that will show when player join time expired"));
 
         config.addDefault("login_done_message",
-                ChatColor.RED +
+                ChatColor.GREEN +
                         "Have a nice game!" + ChatColor.RESET);
         config.setComments("login_done_message",
                 Collections.singletonList("Message that will show when player join after login"));
+
+        config.options().copyDefaults(true);
         saveConfig();
 
         Auther auther = new Auther();
@@ -84,6 +85,8 @@ public final class EasyLogin extends JavaPlugin {
             }
         });
 
+        registerCommands();
+        getServer().getPluginManager().registerEvents(new Auther(), this);
 
 
     }
