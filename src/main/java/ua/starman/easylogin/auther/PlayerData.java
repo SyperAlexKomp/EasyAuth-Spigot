@@ -1,0 +1,56 @@
+package ua.starman.easylogin.auther;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import ua.starman.easylogin.utils.LocalDateTimeAdapter;
+
+import java.io.*;
+import java.net.InetAddress;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+public class PlayerData {
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+            .create();
+    public UUID uuid;
+    public String name;
+    public String password;
+    public InetAddress ip;
+    public LocalDateTime lastLogin;
+
+    public PlayerData(UUID uuid, String name, String password, InetAddress ip, LocalDateTime lastLogin) {
+        this.uuid = uuid;
+        this.name = name;
+        this.password = password;
+        this.ip = ip;
+        this.lastLogin = lastLogin;
+    }
+
+    public boolean save(File path) {
+        assert uuid != null;
+        File playerSaveFile = new File(path, uuid + ".json");
+        try (FileWriter writer = new FileWriter(playerSaveFile)) {
+            gson.toJson(this, writer);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    public static boolean check(UUID playerUUID, File path) {
+        File playerSaveFile = new File(path, playerUUID + ".json");
+
+        return playerSaveFile.exists();
+    }
+
+    public static PlayerData get(UUID playerUUID, File path) {
+        File playerSaveFile = new File(path, playerUUID.toString() + ".json");
+
+        try (FileReader reader = new FileReader(playerSaveFile)) {
+            return gson.fromJson(reader, PlayerData.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}

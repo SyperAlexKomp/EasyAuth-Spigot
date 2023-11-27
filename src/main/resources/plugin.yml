@@ -1,4 +1,9 @@
-name: EasyLogin
+name: EasyAuth
 version: '${version}'
-main: ua.starman.easylogin.EasyLogin
+main: ua.starman.easylogin.EasyAuth
 api-version: '1.20'
+commands:
+  login:
+    description: 'Command to log in'
+  register:
+    description: 'Command to register'
