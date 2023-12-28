@@ -59,6 +59,7 @@ public class LoginCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
         if (sender instanceof Player) {
             List<MetadataValue> metadataBlockedList = ((Player) sender).getMetadata("blocked");
             if (metadataBlockedList.isEmpty()) {

@@ -4,11 +4,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import ua.starman.easylogin.auther.Auther;
+import ua.starman.easylogin.commands.AuthCommand;
 import ua.starman.easylogin.commands.LoginCommand;
 import ua.starman.easylogin.commands.RegisterCommand;
 import ua.starman.easylogin.utils.UpdateChecker;
 
-import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 public final class EasyAuth extends JavaPlugin {
@@ -18,9 +19,9 @@ public final class EasyAuth extends JavaPlugin {
     private void registerCommands() {
         Objects.requireNonNull(getCommand("register")).setExecutor(new RegisterCommand());
         Objects.requireNonNull(getCommand("login")).setExecutor(new LoginCommand());
+        Objects.requireNonNull(getCommand("auth")).setExecutor(new AuthCommand());
 
     }
-
 
 
     @Override
@@ -29,7 +30,7 @@ public final class EasyAuth extends JavaPlugin {
 
         config.addDefault("encode", false);
         config.setComments("encode",
-                Collections.singletonList("Set to true if you want to store passwords in encoded format." +
+                List.of("Set to true if you want to store passwords in encoded format." +
                         " When false passwords will be saved as same as they were typed by player"));
 
         config.addDefault("register_message",
@@ -37,31 +38,32 @@ public final class EasyAuth extends JavaPlugin {
                 "Hello! Before joining to our server you need to register!" +
                 " Use /register <password> <password>" + ChatColor.RESET);
         config.setComments("register_message",
-                Collections.singletonList("Message that will show when player is not registered"));
+                List.of("Message that will show when player is not registered"));
 
         config.addDefault("different_ip_message",
                 ChatColor.RED +
                         "We saw, that you joined from different IP address." +
                         " Use /login <password>" + ChatColor.RESET);
         config.setComments("different_ip_message",
-                Collections.singletonList("Message that will show when player join from different IP address"));
+                List.of("Message that will show when player join from different IP address"));
 
         config.addDefault("unlogin_time",
                 15);
         config.setComments("unlogin_time",
-                Collections.singletonList("Player login expire time in minutes. DEFAULT: 15"));
+                List.of("Player login expire time in minutes. DEFAULT: 15"));
 
         config.addDefault("unlogin_time_message",
                 ChatColor.RED +
                         "Use /login <password>" + ChatColor.RESET);
         config.setComments("unlogin_time_message",
-                Collections.singletonList("Message that will show when player join time expired"));
+                List.of("Message that will show when player join time expired"));
 
         config.addDefault("login_done_message",
                 ChatColor.GREEN +
                         "Have a nice game!" + ChatColor.RESET);
         config.setComments("login_done_message",
-                Collections.singletonList("Message that will show when player join after login"));
+                List.of("Message that will show when player join after login"));
+
 
         config.options().copyDefaults(true);
         saveConfig();
