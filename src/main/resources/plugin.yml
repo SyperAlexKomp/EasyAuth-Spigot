@@ -7,3 +7,5 @@ commands:
     description: 'Command to log in'
   register:
     description: 'Command to register'
+  auth:
+    description: 'Command to check auth data'
