@@ -1,7 +1,7 @@
 name: EasyAuth
 version: '${version}'
 main: ua.starman.easylogin.EasyAuth
-api-version: '1.20'
+api-version: '1.21'
 commands:
   login:
     description: 'Command to log in'

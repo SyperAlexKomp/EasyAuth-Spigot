@@ -31,4 +31,17 @@ public class UpdateChecker {
             }
         });
     }
+
+    public void checkUpdate() {
+        this.getVersion(version -> {
+            if (Float.parseFloat(this.plugin.getDescription().getVersion()) < Float.parseFloat(version)) {
+                this.plugin.getLogger().info("Plugin is up to date!");
+            } else {
+                this.plugin.getLogger().info("There is a new update available " +
+                        this.plugin.getDescription().getVersion() +
+                        " -> " + version);
+                this.plugin.getLogger().info("Check https://www.spigotmc.org/resources/easylogin.113725/");
+            }
+        });
+    }
 }

@@ -1,0 +1,18 @@
+# Some base config
+plugin:
+  # true - plugin working and checking players. false - plugin ignoring authentication.
+  working: true
+  # Name that will be displayed near plugin messages
+  tab: "§4[EasyAuth]"
+
+# How and where player data will be stored
+data:
+  # Where to store player data
+  dir: "plugins/EasyAuth/player-data"
+  # SHA256 - encoding data in SHA256. no - not encoding data at all (Not recommended)
+  method: "SHA256"
+
+# Limits that will be used to players
+limits:
+  # How much plugin must wait before asking for re-log in minutes
+  login_time: 30
