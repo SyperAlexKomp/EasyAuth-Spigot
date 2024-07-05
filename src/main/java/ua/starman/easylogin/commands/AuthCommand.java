@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import ua.starman.easylogin.EasyAuth;
-import ua.starman.easylogin.auther.Auther;
 import ua.starman.easylogin.auther.PlayerData;
 import ua.starman.easylogin.utils.Vars;
 
@@ -17,15 +16,31 @@ public class AuthCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            PlayerData playerData = PlayerData.get(((Player) sender).getUniqueId(), Auther.dataDir);
+        PlayerData playerData = null;
 
-            sender.sendMessage(ChatColor.BLUE + "------------" + ChatColor.AQUA +
-                    "\nUUID: " + ChatColor.RESET + playerData.uuid + ChatColor.AQUA +
-                    "\nIP: " + ChatColor.RESET + playerData.ip.toString() + ChatColor.AQUA +
-                    "\nLast login: " + ChatColor.RESET + playerData.lastLogin.toString() + ChatColor.BLUE +
-                    "\n------------");
+        if (args.length == 0 && (sender instanceof Player)) {
+            playerData = PlayerData.get(((Player) sender).getUniqueId());
+        } else if (args.length > 0 && sender.isOp()) {
+            Player player = sender.getServer().getPlayer(args[0]);
+            if (player != null) {
+                playerData = PlayerData.get(player.getUniqueId());
+            }
+        } else {
+            // TODO
+            return false;
         }
+
+
+        assert playerData != null;
+
+        sender.sendMessage(
+                ChatColor.BLUE + "------------",
+                ChatColor.AQUA + "UUID: " + ChatColor.RESET + playerData.uuid,
+                ChatColor.AQUA + "Nickname: " + ChatColor.RESET + playerData.name,
+                ChatColor.AQUA + "IP: " + ChatColor.RESET + playerData.ip.toString(),
+                ChatColor.AQUA + "Last login time: " + ChatColor.RESET + playerData.lastLogin.toString(),
+                ChatColor.BLUE + "------------"
+        );
         return false;
     }
 }

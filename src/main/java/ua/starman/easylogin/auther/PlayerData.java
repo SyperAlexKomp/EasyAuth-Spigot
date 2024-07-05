@@ -3,6 +3,7 @@ package ua.starman.easylogin.auther;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import ua.starman.easylogin.utils.LocalDateTimeAdapter;
+import ua.starman.easylogin.utils.Vars;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -27,9 +28,9 @@ public class PlayerData {
         this.lastLogin = lastLogin;
     }
 
-    public boolean save(File path) {
+    public boolean save() {
         assert uuid != null;
-        File playerSaveFile = new File(path, uuid + ".json");
+        File playerSaveFile = new File(Vars.dataDir, uuid + ".json");
         try (FileWriter writer = new FileWriter(playerSaveFile)) {
             gson.toJson(this, writer);
             return true;
@@ -38,14 +39,14 @@ public class PlayerData {
         }
     }
 
-    public static boolean check(UUID playerUUID, File path) {
-        File playerSaveFile = new File(path, playerUUID + ".json");
+    public static boolean check(UUID playerUUID) {
+        File playerSaveFile = new File(Vars.dataDir, playerUUID + ".json");
 
         return playerSaveFile.exists();
     }
 
-    public static PlayerData get(UUID playerUUID, File path) {
-        File playerSaveFile = new File(path, playerUUID.toString() + ".json");
+    public static PlayerData get(UUID playerUUID) {
+        File playerSaveFile = new File(Vars.dataDir, playerUUID.toString() + ".json");
 
         try (FileReader reader = new FileReader(playerSaveFile)) {
             return gson.fromJson(reader, PlayerData.class);
