@@ -5,7 +5,11 @@ api-version: '1.21'
 commands:
   login:
     description: 'Command to log in'
+    aliases:
+      - 'log'
   register:
     description: 'Command to register'
+    aliases:
+      - 'reg'
   auth:
     description: 'Command to check auth data'

@@ -8,11 +8,18 @@ plugin:
 # How and where player data will be stored
 data:
   # Where to store player data
-  dir: "plugins/EasyAuth/player-data"
+  dir: "world/playerdata/easy-auth"
   # SHA256 - encoding data in SHA256. no - not encoding data at all (Not recommended)
   method: "SHA256"
 
 # Limits that will be used to players
 limits:
-  # How much plugin must wait before asking for re-log in minutes
-  login_time: 30
+  # Time difference limit
+  time:
+    # If false - will not check time difference on player join
+    working: true
+    # How much plugin must wait before asking for re-log in minutes
+    login_time: 60
+  ip:
+    # If false - will not check IP difference on player join
+    working: true
