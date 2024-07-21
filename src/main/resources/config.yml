@@ -19,7 +19,7 @@ limits:
     # If false - will not check time difference on player join
     working: true
     # How much plugin must wait before asking for re-log in minutes
-    login_time: 60
+    login_time: 1
   ip:
     # If false - will not check IP difference on player join
     working: true
