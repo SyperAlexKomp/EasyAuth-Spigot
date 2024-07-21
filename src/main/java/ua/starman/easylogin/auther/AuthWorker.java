@@ -36,8 +36,6 @@ public class AuthWorker {
         return playerData.password.equals(true_pass);
     }
 
-
-
     public static void loginCancel(Player player, Event event) {
         List<MetadataValue> metadataBlockedList = player.getMetadata("auth_block");
         for (MetadataValue metadataBlocked : metadataBlockedList) {
@@ -46,16 +44,11 @@ public class AuthWorker {
                     ((Cancellable) event).setCancelled(true);
                 }
             }
-
             List<MetadataValue> metadataNeedRegisterList = player.getMetadata("auth_register");
 
-
-
             if (metadataNeedRegisterList.isEmpty() && metadataBlocked.asBoolean()) {
-                Vars.plugin.getLogger().info(metadataBlocked.asString() + " need lo");
                 player.sendMessage(Utils.parseMessage(ChatColor.RED + "Enter /login <password>"));
             } else if (!metadataNeedRegisterList.isEmpty() && metadataBlocked.asBoolean()){
-                Vars.plugin.getLogger().info(String.valueOf(metadataNeedRegisterList.isEmpty()));
                 player.sendMessage(Utils.parseMessage(ChatColor.RED + "Enter /register <password> <password>"));
             }
 
@@ -70,6 +63,4 @@ public class AuthWorker {
             return null;
         }
     }
-
-
 }

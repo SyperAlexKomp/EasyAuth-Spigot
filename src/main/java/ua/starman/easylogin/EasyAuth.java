@@ -1,20 +1,26 @@
 package ua.starman.easylogin;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import ua.starman.easylogin.auther.AuthWorker;
 import ua.starman.easylogin.commands.AuthCommand;
 import ua.starman.easylogin.commands.LoginCommand;
 import ua.starman.easylogin.commands.RegisterCommand;
 import ua.starman.easylogin.events.AuthEvents;
+import ua.starman.easylogin.filters.CommandsFilter;
+import ua.starman.easylogin.filters.Log4JFilter;
 import ua.starman.easylogin.utils.UpdateChecker;
 import ua.starman.easylogin.utils.Utils;
 import ua.starman.easylogin.utils.Vars;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.Objects;
+import java.util.logging.*;
 
 public final class EasyAuth extends JavaPlugin {
     @Override
     public void onEnable() {
+        setupConsoleFilter(getLogger());
+
         // Plugin startup logic
         saveDefaultConfig();
 
@@ -40,5 +46,28 @@ public final class EasyAuth extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+    public static void setupConsoleFilter(Logger logger) {
+        // Try to set the log4j filter
+        try {
+            Class.forName("org.apache.logging.log4j.core.filter.AbstractFilter");
+            setLog4JFilter();
+        } catch (ClassNotFoundException | NoClassDefFoundError e) {
+            // log4j is not available
+            logger.info("You're using Minecraft 1.6.x or older, Log4J support will be disabled");
+            CommandsFilter filter = new CommandsFilter();
+            logger.setFilter(filter);
+            Bukkit.getLogger().setFilter(filter);
+            Logger.getLogger("Minecraft").setFilter(filter);
+        }
+    }
+
+    // Set the console filter to remove the passwords
+    private static void setLog4JFilter() {
+        org.apache.logging.log4j.core.Logger logger;
+
+        logger = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
+        logger.addFilter(new Log4JFilter());
     }
 }

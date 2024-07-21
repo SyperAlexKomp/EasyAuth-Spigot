@@ -12,6 +12,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import ua.starman.easylogin.auther.AuthWorker;
 import ua.starman.easylogin.auther.PlayerData;
+import ua.starman.easylogin.limits.IpLimit;
+import ua.starman.easylogin.limits.TimeLimit;
 import ua.starman.easylogin.utils.Utils;
 import ua.starman.easylogin.utils.Vars;
 
@@ -26,12 +28,12 @@ public class AuthEvents implements Listener {
         if (PlayerData.check(player.getUniqueId())) {
             PlayerData playerData = PlayerData.get(player.getUniqueId());
 
-            if (!playerData.ip.equals(AuthWorker.getIPAddress(player))) {
+            if (IpLimit.working && !playerData.ip.equals(AuthWorker.getIPAddress(player))) {
                 Vars.plugin.getLogger().info(String.format("Player %s was blocked", player.getName()));
                 player.setMetadata("auth_block", new FixedMetadataValue(Vars.plugin, true));
 
                 player.sendMessage(Utils.parseMessage(ChatColor.RED + "You joined from different IP address. Use /login <password>"));
-            } else if (Duration.between(playerData.lastLogin, LocalDateTime.now()).toMinutes() >= Vars.login_time) {
+            } else if (TimeLimit.working && Duration.between(playerData.lastLogin, LocalDateTime.now()).toMinutes() >= TimeLimit.time) {
                 Vars.plugin.getLogger().info(String.format("Player %s was blocked", player.getName()));
                 player.setMetadata("auth_block", new FixedMetadataValue(Vars.plugin, true));
 

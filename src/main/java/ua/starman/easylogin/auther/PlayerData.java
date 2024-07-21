@@ -41,14 +41,23 @@ public class PlayerData {
 
     public static boolean check(UUID playerUUID) {
         File playerSaveFile = new File(Vars.dataDir, playerUUID + ".json");
+        File playerSaveFileOld = new File(Vars.dataDirOld, playerUUID + ".json");
 
-        return playerSaveFile.exists();
+        return playerSaveFile.exists() || playerSaveFileOld.exists();
     }
 
     public static PlayerData get(UUID playerUUID) {
         File playerSaveFile = new File(Vars.dataDir, playerUUID.toString() + ".json");
+        File playerSaveFileOld = new File(Vars.dataDirOld, playerUUID + ".json");
+        File file;
 
-        try (FileReader reader = new FileReader(playerSaveFile)) {
+        if (!playerSaveFile.exists()) {
+            file = playerSaveFileOld;
+        } else {
+            file = playerSaveFile;
+        }
+
+        try (FileReader reader = new FileReader(file)) {
             return gson.fromJson(reader, PlayerData.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
